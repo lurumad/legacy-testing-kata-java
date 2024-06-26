@@ -21,7 +21,7 @@ public class BlogAuctionTask {
     @SuppressWarnings("deprecation")
     public void PriceAndPublish(String blog, String modeName) {
         var proposal = calculateInitialProposal(blog);
-        var mode = new Mode(modeName);
+        var mode = Mode.of(modeName);
         var timeFactor = mode.timeFactor();
         var date = new Date(2000, Calendar.JANUARY, 1);
         proposal = isEven(proposal)
