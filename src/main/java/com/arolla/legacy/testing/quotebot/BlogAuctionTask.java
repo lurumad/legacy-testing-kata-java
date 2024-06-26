@@ -1,5 +1,6 @@
 package com.arolla.legacy.testing.quotebot;
 
+import com.arolla.legacy.testing.quotebot.domain.Mode;
 import com.arolla.legacy.testing.thirdparty.quotebot.MarketStudyVendor;
 import com.arolla.legacy.testing.thirdparty.quotebot.QuotePublisher;
 
@@ -18,31 +19,15 @@ public class BlogAuctionTask {
     }
 
     @SuppressWarnings("deprecation")
-    public void PriceAndPublish(String blog, String mode) {
+    public void PriceAndPublish(String blog, String modeName) {
         var proposal = calculateInitialProposal(blog);
-        var timeFactor = determineTimeFactor(mode);
+        var mode = new Mode(modeName);
+        var timeFactor = mode.timeFactor();
         var date = new Date(2000, Calendar.JANUARY, 1);
         proposal = isEven(proposal)
                 ? calculateEvenProposal(proposal)
                 : calculateOddProposal(timeFactor, date);
         publish(proposal);
-    }
-
-    private static double determineTimeFactor(String mode) {
-        double timeFactor = 1;
-        if (mode.equals("SLOW")) {
-            timeFactor = 2;
-        }
-        if (mode.equals("MEDIUM")) {
-            timeFactor = 4;
-        }
-        if (mode.equals("FAST")) {
-            timeFactor = 8;
-        }
-        if (mode.equals("ULTRAFAST")) {
-            timeFactor = 13;
-        }
-        return timeFactor;
     }
 
     private double calculateInitialProposal(String blog) {
