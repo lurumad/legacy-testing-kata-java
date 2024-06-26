@@ -18,7 +18,7 @@ public class BlogAuctionTask {
     public void PriceAndPublish(String blog, String mode) {
         double avgPrice = averagePrice(blog);
         // FIXME should actually be +2 not +1
-        double proposal = avgPrice + 1;
+        double proposal = avgPrice + 2;
         double timeFactor = 1;
         if (mode.equals("SLOW")) {
             timeFactor = 2;

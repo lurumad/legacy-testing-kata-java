@@ -38,16 +38,16 @@ public class BlogAuctionTaskTest extends BlogAuctionTask {
 
     private static Stream<Arguments> providerModes() {
         return Stream.of(
-                Arguments.of("UNKNOWN", 3.15, 0.0),
-                Arguments.of("UNKNOWN", 6.28, 1.0),
-                Arguments.of("SLOW", 6.3, 0.0),
-                Arguments.of("SLOW", 6.28, 1.0),
-                Arguments.of("MEDIUM", 12.6, 0.0),
-                Arguments.of("MEDIUM", 6.28, 1.0),
-                Arguments.of("FAST", 25.2, 0.0),
-                Arguments.of("FAST", 6.28, 1.0),
-                Arguments.of("ULTRAFAST", 40.949999999999996, 0.0),
-                Arguments.of("ULTRAFAST", 6.28, 1.0)
+                Arguments.of("UNKNOWN", 3.15, 1.0),
+                Arguments.of("UNKNOWN", 6.28, 0.0),
+                Arguments.of("SLOW", 6.3, 1.0),
+                Arguments.of("SLOW", 6.28, 0.0),
+                Arguments.of("MEDIUM", 12.6, 1.0),
+                Arguments.of("MEDIUM", 6.28, 0.0),
+                Arguments.of("FAST", 25.2, 1.0),
+                Arguments.of("FAST", 6.28, 0.0),
+                Arguments.of("ULTRAFAST", 40.949999999999996, 1.0),
+                Arguments.of("ULTRAFAST", 6.28, 0.0)
         );
     }
 }
