@@ -3,8 +3,6 @@ package com.arolla.legacy.testing.quotebot;
 import com.arolla.legacy.testing.quotebot.domain.Blog;
 import com.arolla.legacy.testing.quotebot.domain.MarketDataRetriever;
 import com.arolla.legacy.testing.quotebot.domain.Mode;
-import com.arolla.legacy.testing.quotebot.infrastructure.MarketStudyVendorDataRetriever;
-import com.arolla.legacy.testing.thirdparty.quotebot.MarketStudyVendor;
 import com.arolla.legacy.testing.thirdparty.quotebot.QuotePublisher;
 
 import java.util.Calendar;
@@ -18,8 +16,8 @@ public class BlogAuctionTask {
     private final MarketDataRetriever marketDataRetriever;
     protected double proposal;
 
-    public BlogAuctionTask() {
-        marketDataRetriever = new MarketStudyVendorDataRetriever(new MarketStudyVendor());
+    public BlogAuctionTask(MarketDataRetriever marketDataRetriever) {
+        this.marketDataRetriever = marketDataRetriever;
     }
 
 
@@ -63,7 +61,7 @@ public class BlogAuctionTask {
         return new Date().getTime() - date.getTime();
     }
 
-    protected double averagePrice(Blog blog) {
+    private double averagePrice(Blog blog) {
         return marketDataRetriever.averagePrice(blog);
     }
 

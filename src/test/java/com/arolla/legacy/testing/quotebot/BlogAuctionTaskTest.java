@@ -1,6 +1,7 @@
 package com.arolla.legacy.testing.quotebot;
 
 import com.arolla.legacy.testing.quotebot.domain.Blog;
+import com.arolla.legacy.testing.quotebot.domain.MarketDataRetriever;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -34,12 +35,12 @@ public class BlogAuctionTaskTest {
     }
 
     private BlogAuctionTask buildBlogAuctionTask(double averagePrice) {
-        return new BlogAuctionTask() {
+        return new BlogAuctionTask(new MarketDataRetriever() {
             @Override
-            protected double averagePrice(Blog blog) {
+            public double averagePrice(Blog blog) {
                 return averagePrice;
             }
-
+        }) {
             @Override
             protected void publish(double proposal) {
                 this.proposal = proposal;
