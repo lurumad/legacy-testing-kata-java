@@ -8,7 +8,7 @@ public class AutomaticQuoteBot {
         Collection<String> blogs = AdSpace.getAdSpaces();
         for (String blog : blogs) {
             BlogAuctionTask auctionTask = new BlogAuctionTask();
-            auctionTask.PriceAndPublish(blog, mode);
+            auctionTask.priceAndPublish(blog, mode);
         }
     }
 }

@@ -16,13 +16,14 @@ public class BlogAuctionTask {
     public static final double EVEN_PROPOSAL_MULTIPLIER = 3.14;
     public static final double ODD_PROPOSAL_MULTIPLIER = 3.15;
     private final MarketDataRetriever marketDataRetriever;
+    protected double proposal;
 
     public BlogAuctionTask() {
         marketDataRetriever = new MarketStudyVendorDataRetriever(new MarketStudyVendor());
     }
 
 
-    public void PriceAndPublish(String blogName, String modeName) {
+    public void priceAndPublish(String blogName, String modeName) {
         var proposal = calculateProposal(blogName, modeName);
 
         publish(proposal);
