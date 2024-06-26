@@ -9,6 +9,8 @@ import java.util.Date;
 public class BlogAuctionTask {
 
     public static final int PRICE_ADJUSTMENT = 2;
+    public static final double EVEN_PROPOSAL_MULTIPLIER = 3.14;
+    public static final double ODD_PROPOSAL_MULTIPLIER = 3.15;
     private final MarketStudyVendor marketDataRetriever;
 
     public BlogAuctionTask() {
@@ -33,10 +35,22 @@ public class BlogAuctionTask {
             timeFactor = 13;
         }
         Date date = new Date(2000, Calendar.JANUARY, 1);
-        proposal = proposal % 2 == 0 ? 3.14 * proposal : 3.15
-                * timeFactor
-                * timeDiff(date);
+        proposal = isEven(proposal)
+                ? calculateEvenProposal(proposal)
+                : calculateOddProposal(timeFactor, date);
         publish(proposal);
+    }
+
+    private static boolean isEven(double proposal) {
+        return proposal % 2 == 0;
+    }
+
+    private static double calculateEvenProposal(double proposal) {
+        return EVEN_PROPOSAL_MULTIPLIER * proposal;
+    }
+
+    private double calculateOddProposal(double timeFactor, Date date) {
+        return ODD_PROPOSAL_MULTIPLIER * timeFactor * timeDiff(date);
     }
 
     protected long timeDiff(Date date) {
