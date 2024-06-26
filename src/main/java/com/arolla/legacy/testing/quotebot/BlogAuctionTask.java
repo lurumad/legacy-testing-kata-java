@@ -1,7 +1,9 @@
 package com.arolla.legacy.testing.quotebot;
 
 import com.arolla.legacy.testing.quotebot.domain.Blog;
+import com.arolla.legacy.testing.quotebot.domain.MarketDataRetriever;
 import com.arolla.legacy.testing.quotebot.domain.Mode;
+import com.arolla.legacy.testing.quotebot.infrastructure.MarketStudyVendorDataRetriever;
 import com.arolla.legacy.testing.thirdparty.quotebot.MarketStudyVendor;
 import com.arolla.legacy.testing.thirdparty.quotebot.QuotePublisher;
 
@@ -13,10 +15,18 @@ public class BlogAuctionTask {
     public static final int PRICE_ADJUSTMENT = 2;
     public static final double EVEN_PROPOSAL_MULTIPLIER = 3.14;
     public static final double ODD_PROPOSAL_MULTIPLIER = 3.15;
-    private final MarketStudyVendor marketDataRetriever;
+    private final MarketDataRetriever marketDataRetriever;
 
     public BlogAuctionTask() {
-        marketDataRetriever = new MarketStudyVendor();
+        marketDataRetriever = new MarketStudyVendorDataRetriever(new MarketStudyVendor());
+    }
+
+    private static boolean isEven(double proposal) {
+        return proposal % 2 == 0;
+    }
+
+    private static double calculateEvenProposal(double proposal) {
+        return EVEN_PROPOSAL_MULTIPLIER * proposal;
     }
 
     @SuppressWarnings("deprecation")
@@ -35,14 +45,6 @@ public class BlogAuctionTask {
         return averagePrice(blog) + PRICE_ADJUSTMENT;
     }
 
-    private static boolean isEven(double proposal) {
-        return proposal % 2 == 0;
-    }
-
-    private static double calculateEvenProposal(double proposal) {
-        return EVEN_PROPOSAL_MULTIPLIER * proposal;
-    }
-
     private double calculateOddProposal(double timeFactor, Date date) {
         return ODD_PROPOSAL_MULTIPLIER * timeFactor * timeDiff(date);
     }
@@ -52,7 +54,7 @@ public class BlogAuctionTask {
     }
 
     protected double averagePrice(Blog blog) {
-        return marketDataRetriever.averagePrice(blog.name());
+        return marketDataRetriever.averagePrice(blog);
     }
 
     protected void publish(double proposal) {
