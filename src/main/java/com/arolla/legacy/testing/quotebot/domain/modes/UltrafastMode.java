@@ -4,7 +4,7 @@ import com.arolla.legacy.testing.quotebot.domain.Mode;
 
 public class UltrafastMode extends Mode {
     public UltrafastMode(String mode) {
-        super(mode);
+        super();
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.arolla.legacy.testing.quotebot.domain.Mode;
 
 public class SlowMode extends Mode {
     public SlowMode(String mode) {
-        super(mode);
+        super();
     }
 
     @Override
