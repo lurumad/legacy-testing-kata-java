@@ -1,5 +1,6 @@
 package com.arolla.legacy.testing.quotebot;
 
+import com.arolla.legacy.testing.quotebot.domain.Blog;
 import com.arolla.legacy.testing.quotebot.domain.Mode;
 import com.arolla.legacy.testing.thirdparty.quotebot.MarketStudyVendor;
 import com.arolla.legacy.testing.thirdparty.quotebot.QuotePublisher;
@@ -19,8 +20,9 @@ public class BlogAuctionTask {
     }
 
     @SuppressWarnings("deprecation")
-    public void PriceAndPublish(String blog, String modeName) {
+    public void PriceAndPublish(String blogName, String modeName) {
         var mode = Mode.of(modeName);
+        var blog = new Blog(blogName);
         var proposal = calculateInitialProposal(blog);
         var date = new Date(2000, Calendar.JANUARY, 1);
         proposal = isEven(proposal)
@@ -29,7 +31,7 @@ public class BlogAuctionTask {
         publish(proposal);
     }
 
-    private double calculateInitialProposal(String blog) {
+    private double calculateInitialProposal(Blog blog) {
         return averagePrice(blog) + PRICE_ADJUSTMENT;
     }
 
@@ -49,8 +51,8 @@ public class BlogAuctionTask {
         return new Date().getTime() - date.getTime();
     }
 
-    protected double averagePrice(String blog) {
-        return marketDataRetriever.averagePrice(blog);
+    protected double averagePrice(Blog blog) {
+        return marketDataRetriever.averagePrice(blog.name());
     }
 
     protected void publish(double proposal) {

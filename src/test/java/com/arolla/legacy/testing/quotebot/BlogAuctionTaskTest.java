@@ -1,5 +1,6 @@
 package com.arolla.legacy.testing.quotebot;
 
+import com.arolla.legacy.testing.quotebot.domain.Blog;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -22,7 +23,7 @@ public class BlogAuctionTaskTest extends BlogAuctionTask {
     }
 
     @Override
-    protected double averagePrice(String blog) {
+    protected double averagePrice(Blog blog) {
         return this.averagePrice;
     }
 
