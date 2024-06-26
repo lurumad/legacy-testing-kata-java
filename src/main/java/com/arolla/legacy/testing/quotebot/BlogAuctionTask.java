@@ -19,8 +19,7 @@ public class BlogAuctionTask {
 
     @SuppressWarnings("deprecation")
     public void PriceAndPublish(String blog, String mode) {
-        double avgPrice = averagePrice(blog);
-        double proposal = avgPrice + PRICE_ADJUSTMENT;
+        double proposal = calculateInitialProposal(blog);
         double timeFactor = 1;
         if (mode.equals("SLOW")) {
             timeFactor = 2;
@@ -39,6 +38,10 @@ public class BlogAuctionTask {
                 ? calculateEvenProposal(proposal)
                 : calculateOddProposal(timeFactor, date);
         publish(proposal);
+    }
+
+    private double calculateInitialProposal(String blog) {
+        return averagePrice(blog) + PRICE_ADJUSTMENT;
     }
 
     private static boolean isEven(double proposal) {
