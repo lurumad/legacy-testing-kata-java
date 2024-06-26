@@ -19,7 +19,16 @@ public class BlogAuctionTask {
 
     @SuppressWarnings("deprecation")
     public void PriceAndPublish(String blog, String mode) {
-        double proposal = calculateInitialProposal(blog);
+        var proposal = calculateInitialProposal(blog);
+        var timeFactor = determineTimeFactor(mode);
+        var date = new Date(2000, Calendar.JANUARY, 1);
+        proposal = isEven(proposal)
+                ? calculateEvenProposal(proposal)
+                : calculateOddProposal(timeFactor, date);
+        publish(proposal);
+    }
+
+    private static double determineTimeFactor(String mode) {
         double timeFactor = 1;
         if (mode.equals("SLOW")) {
             timeFactor = 2;
@@ -33,11 +42,7 @@ public class BlogAuctionTask {
         if (mode.equals("ULTRAFAST")) {
             timeFactor = 13;
         }
-        Date date = new Date(2000, Calendar.JANUARY, 1);
-        proposal = isEven(proposal)
-                ? calculateEvenProposal(proposal)
-                : calculateOddProposal(timeFactor, date);
-        publish(proposal);
+        return timeFactor;
     }
 
     private double calculateInitialProposal(String blog) {
