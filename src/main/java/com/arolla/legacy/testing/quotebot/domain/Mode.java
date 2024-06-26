@@ -1,5 +1,6 @@
 package com.arolla.legacy.testing.quotebot.domain;
 
+import com.arolla.legacy.testing.quotebot.domain.modes.FastMode;
 import com.arolla.legacy.testing.quotebot.domain.modes.MediumMode;
 import com.arolla.legacy.testing.quotebot.domain.modes.SlowMode;
 
@@ -16,6 +17,8 @@ public class Mode {
                 return new SlowMode(mode);
             case "MEDIUM":
                 return new MediumMode(mode);
+            case "FAST":
+                return new FastMode(mode);
             default:
                 return new Mode(mode);
         }
@@ -23,9 +26,6 @@ public class Mode {
 
     public double timeFactor() {
         double timeFactor = 1;
-        if (mode.equals("FAST")) {
-            timeFactor = 8;
-        }
         if (mode.equals("ULTRAFAST")) {
             timeFactor = 13;
         }
