@@ -21,6 +21,29 @@ public class BlogAuctionTask {
         marketDataRetriever = new MarketStudyVendorDataRetriever(new MarketStudyVendor());
     }
 
+
+    public void PriceAndPublish(String blogName, String modeName) {
+        var proposal = calculateProposal(blogName, modeName);
+
+        publish(proposal);
+    }
+
+    private double calculateProposal(String blogName, String modeName) {
+        var mode = Mode.of(modeName);
+        var blog = new Blog(blogName);
+        var proposal = calculateInitialProposal(blog);
+
+        proposal = isEven(proposal)
+                ? calculateEvenProposal(proposal)
+                : calculateOddProposal(mode);
+
+        return proposal;
+    }
+
+    private double calculateInitialProposal(Blog blog) {
+        return averagePrice(blog) + PRICE_ADJUSTMENT;
+    }
+
     private static boolean isEven(double proposal) {
         return proposal % 2 == 0;
     }
@@ -30,23 +53,9 @@ public class BlogAuctionTask {
     }
 
     @SuppressWarnings("deprecation")
-    public void PriceAndPublish(String blogName, String modeName) {
-        var mode = Mode.of(modeName);
-        var blog = new Blog(blogName);
-        var proposal = calculateInitialProposal(blog);
+    private double calculateOddProposal(Mode mode) {
         var date = new Date(2000, Calendar.JANUARY, 1);
-        proposal = isEven(proposal)
-                ? calculateEvenProposal(proposal)
-                : calculateOddProposal(mode.timeFactor(), date);
-        publish(proposal);
-    }
-
-    private double calculateInitialProposal(Blog blog) {
-        return averagePrice(blog) + PRICE_ADJUSTMENT;
-    }
-
-    private double calculateOddProposal(double timeFactor, Date date) {
-        return ODD_PROPOSAL_MULTIPLIER * timeFactor * timeDiff(date);
+        return ODD_PROPOSAL_MULTIPLIER * mode.timeFactor() * timeDiff(date);
     }
 
     protected long timeDiff(Date date) {
