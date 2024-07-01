@@ -3,7 +3,7 @@ package com.arolla.legacy.testing.quotebot;
 import com.arolla.legacy.testing.quotebot.domain.Blog;
 import com.arolla.legacy.testing.quotebot.domain.MarketDataRetriever;
 import com.arolla.legacy.testing.quotebot.domain.Mode;
-import com.arolla.legacy.testing.thirdparty.quotebot.QuotePublisher;
+import com.arolla.legacy.testing.quotebot.domain.Publisher;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -14,22 +14,23 @@ public class BlogAuctionTask {
     public static final double EVEN_PROPOSAL_MULTIPLIER = 3.14;
     public static final double ODD_PROPOSAL_MULTIPLIER = 3.15;
     private final MarketDataRetriever marketDataRetriever;
-    protected double proposal;
+    private final Publisher publisher;
 
-    public BlogAuctionTask(MarketDataRetriever marketDataRetriever) {
+    public BlogAuctionTask(MarketDataRetriever marketDataRetriever, Publisher publisher) {
         this.marketDataRetriever = marketDataRetriever;
+        this.publisher = publisher;
     }
-
 
     public void priceAndPublish(String blogName, String modeName) {
-        var proposal = calculateProposal(blogName, modeName);
-
-        publish(proposal);
-    }
-
-    private double calculateProposal(String blogName, String modeName) {
         var mode = Mode.of(modeName);
         var blog = new Blog(blogName);
+
+        var proposal = calculateProposal(blog, mode);
+
+        publisher.publish(proposal);
+    }
+
+    private double calculateProposal(Blog blog, Mode mode) {
         var proposal = calculateInitialProposal(blog);
 
         proposal = isEven(proposal)
@@ -63,9 +64,5 @@ public class BlogAuctionTask {
 
     private double averagePrice(Blog blog) {
         return marketDataRetriever.averagePrice(blog);
-    }
-
-    protected void publish(double proposal) {
-        QuotePublisher.INSTANCE.publish(proposal);
     }
 }

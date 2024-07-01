@@ -2,6 +2,8 @@ package com.arolla.legacy.testing.quotebot;
 
 import com.arolla.legacy.testing.quotebot.domain.Blog;
 import com.arolla.legacy.testing.quotebot.domain.MarketDataRetriever;
+import com.arolla.legacy.testing.quotebot.domain.Publisher;
+import com.arolla.legacy.testing.quotebot.infrastructure.PricePublisher;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -11,12 +13,14 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BlogAuctionTaskTest {
+    private double actualProposal;
+
     @ParameterizedTest
     @MethodSource("providerModes")
     public void testPriceAndPublish(String mode, double expectedProposal, double averagePrice) {
         var blogAuctionTask = buildBlogAuctionTask(averagePrice);
         blogAuctionTask.priceAndPublish("blog", mode);
-        assertEquals(expectedProposal, blogAuctionTask.proposal);
+        assertEquals(expectedProposal, actualProposal);
     }
 
     private static Stream<Arguments> providerModes() {
@@ -40,12 +44,13 @@ public class BlogAuctionTaskTest {
             public double averagePrice(Blog blog) {
                 return averagePrice;
             }
-        }) {
+        }, new Publisher() {
             @Override
-            protected void publish(double proposal) {
-                this.proposal = proposal;
+            public void publish(double proposal) {
+                actualProposal = proposal;
             }
 
+        }) {
             @Override
             protected long timeDiff(java.util.Date date) {
                 return 1;
