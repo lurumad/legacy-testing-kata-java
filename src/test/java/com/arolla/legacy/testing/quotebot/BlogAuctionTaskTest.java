@@ -1,13 +1,14 @@
 package com.arolla.legacy.testing.quotebot;
 
 import com.arolla.legacy.testing.quotebot.domain.Blog;
+import com.arolla.legacy.testing.quotebot.domain.Clock;
 import com.arolla.legacy.testing.quotebot.domain.MarketDataRetriever;
 import com.arolla.legacy.testing.quotebot.domain.Publisher;
-import com.arolla.legacy.testing.quotebot.infrastructure.PricePublisher;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Date;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -50,11 +51,11 @@ public class BlogAuctionTaskTest {
                 actualProposal = proposal;
             }
 
-        }) {
+        }, new Clock() {
             @Override
-            protected long timeDiff(java.util.Date date) {
+            public long elapsedMilliseconds(Date date) {
                 return 1;
             }
-        };
+        });
     }
 }

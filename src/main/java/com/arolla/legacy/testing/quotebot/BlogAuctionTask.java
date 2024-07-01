@@ -1,9 +1,6 @@
 package com.arolla.legacy.testing.quotebot;
 
-import com.arolla.legacy.testing.quotebot.domain.Blog;
-import com.arolla.legacy.testing.quotebot.domain.MarketDataRetriever;
-import com.arolla.legacy.testing.quotebot.domain.Mode;
-import com.arolla.legacy.testing.quotebot.domain.Publisher;
+import com.arolla.legacy.testing.quotebot.domain.*;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -15,10 +12,16 @@ public class BlogAuctionTask {
     public static final double ODD_PROPOSAL_MULTIPLIER = 3.15;
     private final MarketDataRetriever marketDataRetriever;
     private final Publisher publisher;
+    private final Clock clock;
 
-    public BlogAuctionTask(MarketDataRetriever marketDataRetriever, Publisher publisher) {
+    public BlogAuctionTask(
+            MarketDataRetriever marketDataRetriever,
+            Publisher publisher,
+            Clock clock
+    ) {
         this.marketDataRetriever = marketDataRetriever;
         this.publisher = publisher;
+        this.clock = clock;
     }
 
     public void priceAndPublish(String blogName, String modeName) {
@@ -41,7 +44,7 @@ public class BlogAuctionTask {
     }
 
     private double calculateInitialProposal(Blog blog) {
-        return averagePrice(blog) + PRICE_ADJUSTMENT;
+        return marketDataRetriever.averagePrice(blog) + PRICE_ADJUSTMENT;
     }
 
     private static boolean isEven(double proposal) {
@@ -55,14 +58,6 @@ public class BlogAuctionTask {
     @SuppressWarnings("deprecation")
     private double calculateOddProposal(Mode mode) {
         var date = new Date(2000, Calendar.JANUARY, 1);
-        return ODD_PROPOSAL_MULTIPLIER * mode.timeFactor() * timeDiff(date);
-    }
-
-    protected long timeDiff(Date date) {
-        return new Date().getTime() - date.getTime();
-    }
-
-    private double averagePrice(Blog blog) {
-        return marketDataRetriever.averagePrice(blog);
+        return ODD_PROPOSAL_MULTIPLIER * mode.timeFactor() * this.clock.elapsedMilliseconds(date);
     }
 }
