@@ -24,6 +24,14 @@ public class BlogAuctionTask {
         this.clock = clock;
     }
 
+    private static boolean isEven(double proposal) {
+        return proposal % 2 == 0;
+    }
+
+    private static double calculateEvenProposal(double proposal) {
+        return EVEN_PROPOSAL_MULTIPLIER * proposal;
+    }
+
     public void priceAndPublish(String blogName, String modeName) {
         var mode = Mode.of(modeName);
         var blog = new Blog(blogName);
@@ -45,14 +53,6 @@ public class BlogAuctionTask {
 
     private double calculateInitialProposal(Blog blog) {
         return marketDataRetriever.averagePrice(blog) + PRICE_ADJUSTMENT;
-    }
-
-    private static boolean isEven(double proposal) {
-        return proposal % 2 == 0;
-    }
-
-    private static double calculateEvenProposal(double proposal) {
-        return EVEN_PROPOSAL_MULTIPLIER * proposal;
     }
 
     @SuppressWarnings("deprecation")

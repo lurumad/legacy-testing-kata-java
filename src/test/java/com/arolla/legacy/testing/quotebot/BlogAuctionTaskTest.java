@@ -16,14 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class BlogAuctionTaskTest {
     private double actualProposal;
 
-    @ParameterizedTest
-    @MethodSource("providerModes")
-    public void testPriceAndPublish(String mode, double expectedProposal, double averagePrice) {
-        var blogAuctionTask = buildBlogAuctionTask(averagePrice);
-        blogAuctionTask.priceAndPublish("blog", mode);
-        assertEquals(expectedProposal, actualProposal);
-    }
-
     private static Stream<Arguments> providerModes() {
         return Stream.of(
                 Arguments.of("UNKNOWN", 3.15, 1.0),
@@ -37,6 +29,14 @@ public class BlogAuctionTaskTest {
                 Arguments.of("ULTRAFAST", 40.949999999999996, 1.0),
                 Arguments.of("ULTRAFAST", 6.28, 0.0)
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("providerModes")
+    public void testPriceAndPublish(String mode, double expectedProposal, double averagePrice) {
+        var blogAuctionTask = buildBlogAuctionTask(averagePrice);
+        blogAuctionTask.priceAndPublish("blog", mode);
+        assertEquals(expectedProposal, actualProposal);
     }
 
     private BlogAuctionTask buildBlogAuctionTask(double averagePrice) {
