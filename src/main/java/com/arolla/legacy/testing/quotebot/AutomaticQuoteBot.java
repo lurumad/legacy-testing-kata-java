@@ -3,7 +3,7 @@ package com.arolla.legacy.testing.quotebot;
 import com.arolla.legacy.testing.quotebot.domain.Clock;
 import com.arolla.legacy.testing.quotebot.infrastructure.MarketStudyVendorAdapter;
 import com.arolla.legacy.testing.quotebot.infrastructure.QuotePublisherAdapter;
-import com.arolla.legacy.testing.quotebot.infrastructure.SystemClock;
+import com.arolla.legacy.testing.quotebot.infrastructure.TechBlogsDbRepository;
 
 public class AutomaticQuoteBot {
 
@@ -22,7 +22,7 @@ public class AutomaticQuoteBot {
     }
 
     public void sendAllQuotes(String mode) {
-        var blogs = AdSpace.getAdSpaces();
+        var blogs = new AdSpace(new TechBlogsDbRepository()).getAdSpaces();
         var auctionTask = new BlogAuctionTask(
                 marketDataRetriever,
                 publisher,

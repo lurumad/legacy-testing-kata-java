@@ -33,7 +33,7 @@ public class BlogAuctionTaskTest {
 
     @ParameterizedTest
     @MethodSource("providerModes")
-    public void testPriceAndPublish(String mode, double expectedProposal, double averagePrice) {
+    public void pricing_and_publishing_calculates_correct_proposal_based_on_blog_and_mode(String mode, double expectedProposal, double averagePrice) {
         var blogAuctionTask = buildBlogAuctionTask(averagePrice);
         blogAuctionTask.priceAndPublish("blog", mode);
         assertEquals(expectedProposal, actualProposal);

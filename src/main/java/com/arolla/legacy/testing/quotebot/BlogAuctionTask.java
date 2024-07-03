@@ -36,11 +36,9 @@ public class BlogAuctionTask {
     private double calculateProposal(Blog blog, Mode mode) {
         var proposal = calculateInitialProposal(blog);
 
-        proposal = isEven(proposal)
+        return isEven(proposal)
                 ? calculateEvenProposal(proposal)
                 : calculateOddProposal(mode);
-
-        return proposal;
     }
 
     private double calculateInitialProposal(Blog blog) {
