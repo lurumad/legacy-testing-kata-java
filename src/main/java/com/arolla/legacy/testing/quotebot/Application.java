@@ -3,6 +3,7 @@ package com.arolla.legacy.testing.quotebot;
 import com.arolla.legacy.testing.quotebot.infrastructure.MarketStudyVendorAdapter;
 import com.arolla.legacy.testing.quotebot.infrastructure.QuotePublisherAdapter;
 import com.arolla.legacy.testing.quotebot.infrastructure.SystemClock;
+import com.arolla.legacy.testing.quotebot.infrastructure.TechBlogsDbRepository;
 import com.arolla.legacy.testing.thirdparty.quotebot.MarketStudyVendor;
 
 public class Application {
@@ -10,7 +11,8 @@ public class Application {
         AutomaticQuoteBot bot = new AutomaticQuoteBot(
                 new MarketStudyVendorAdapter(new MarketStudyVendor()),
                 new QuotePublisherAdapter(),
-                new SystemClock()
+                new SystemClock(),
+                new AdSpace(new TechBlogsDbRepository())
         );
         bot.sendAllQuotes("FAST");
     }
