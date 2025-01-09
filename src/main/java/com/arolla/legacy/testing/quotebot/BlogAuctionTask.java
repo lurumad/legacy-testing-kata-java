@@ -16,7 +16,7 @@ public class BlogAuctionTask {
 
 	@SuppressWarnings("deprecation")
 	public void PriceAndPublish(String blog, String mode) {
-		double avgPrice = marketDataRetriever.averagePrice(blog);
+		double avgPrice = calculateAveragePrice(blog);
 		// FIXME should actually be +2 not +1
 		double proposal = avgPrice + 1;
 		double timeFactor = 1;
@@ -34,8 +34,23 @@ public class BlogAuctionTask {
 		}
 		proposal = proposal % 2 == 0 ? 3.14 * proposal : 3.15
 				* timeFactor
-				* (new Date().getTime() - new Date(2000, Calendar.JANUARY, 1)
-						.getTime());
+				* timeDiff();
+		publish(proposal);
+	}
+
+	// A seam is a place where you can alter behavior in your program without editing that place.
+	protected long timeDiff() {
+		return new Date().getTime() - new Date(2000, Calendar.JANUARY, 1)
+				.getTime();
+	}
+
+	// A seam is a place where you can alter behavior in your program without editing that place.
+	protected void publish(double proposal) {
 		QuotePublisher.INSTANCE.publish(proposal);
+	}
+
+	// A seam is a place where you can alter behavior in your program without editing that place.
+	protected double calculateAveragePrice(String blog) {
+		return marketDataRetriever.averagePrice(blog);
 	}
 }
