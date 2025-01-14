@@ -1,7 +1,7 @@
 legacy-testing-kata-java
 ========================
 
-A legacy codebase that resist a bit testing.
+A legacy codebase that resist a bit testing. The code defines a bot for determining and publishing a price proposal for a blog based on market data and a specified mode of operation.
 
 First try to run it. 
 
